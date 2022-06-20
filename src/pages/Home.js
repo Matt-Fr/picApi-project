@@ -17,8 +17,8 @@ const Home = () => {
   const fetchImages = async () => {
     setLoading(true);
     let url;
-    const urlQuery = `&query=${query}`;
     const urlPage = `&page=${page}`;
+    const urlQuery = `&query=${query}`;
 
     if (query) {
       url = `${searchUrl}${clientID}${urlPage}${urlQuery}`;
@@ -42,6 +42,7 @@ const Home = () => {
       setNewImages(false);
       setLoading(false);
     } catch (error) {
+      setNewImages(false);
       setLoading(false);
       console.log(error);
     }
@@ -79,7 +80,6 @@ const Home = () => {
     if (!query) return;
     if (page === 1) {
       fetchImages();
-      return;
     }
     setPage(1);
   };
@@ -103,13 +103,8 @@ const Home = () => {
       </section>
       <section>
         <div>
-          {photos.map((image) => {
-            return (
-              <Photo
-                // key={image.id}
-                {...image}
-              ></Photo>
-            );
+          {photos.map((image, index) => {
+            return <Photo key={(image, index)} {...image}></Photo>;
           })}
         </div>
         {loading && <h2>Loading...</h2>}
