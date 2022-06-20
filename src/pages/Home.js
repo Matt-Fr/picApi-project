@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { FaSearch } from "react-icons/fa";
+import Photo from "../components/Photo";
 
 const mainUrl = `https://api.unsplash.com/photos/`;
 const searchUrl = `https://api.unsplash.com/search/photos/`;
@@ -15,7 +17,8 @@ const Home = () => {
     try {
       const response = await fetch(url);
       const data = await response.json();
-      console.log(data);
+      setPhotos(data);
+      setLoading(false);
     } catch (error) {
       setLoading(false);
       console.log(error);
@@ -26,7 +29,38 @@ const Home = () => {
     fetchImages();
   }, []);
 
-  return <div>Home</div>;
+  useEffect(() => {
+    const event = window.addEventListener("scroll", () => {});
+    return () => {
+      window.removeEventListener("scroll", event);
+    };
+  }, []);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
+
+  return (
+    <>
+      <section>
+        <form>
+          <input type="text" placeholder="search" />
+          <button type="submit" onClick={handleSubmit}>
+            <FaSearch></FaSearch>
+          </button>
+        </form>
+      </section>
+      <section>
+        <div>
+          {photos.map((image) => {
+            console.log(image);
+            return <Photo key={image.id} {...image}></Photo>;
+          })}
+        </div>
+        {loading && <h2>Loading...</h2>}
+      </section>
+    </>
+  );
 };
 
 export default Home;
